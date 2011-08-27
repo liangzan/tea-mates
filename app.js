@@ -39,7 +39,7 @@ var audioDir = __dirname + '/audio/';
 var fileCounter = 'counter.json';
 
 app.get('/', function(req, res){
-	  res.render('index', { title: 'Tea-mates' });
+	  res.render('index', {result: ""});
 	});
 
 app.post('/', function (req, res, next) {
@@ -79,12 +79,12 @@ app.post('/', function (req, res, next) {
 										     sys.puts(JSON.stringify(err));
 										   } else {
 										     sys.puts(text);
+										     res.render('index', { result: text });
 										     fs.unlinkSync(__dirname + '/' + path.basename(audioFileName, '.mp3') + '.flac');
 										   }
 										 });
 						      }
 						    });
-		    		   res.redirect('back');
 				 }
 				 else {
 				   res.send(415);
