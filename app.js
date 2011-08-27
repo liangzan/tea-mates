@@ -1,6 +1,8 @@
 /*
  * Module dependencies.
  */
+require('nko')('qZEbdQsd5oI2kFe0');
+
 var logger = require('nlogger').logger(module),
 sys = require('sys'),
 path = require('path'),
