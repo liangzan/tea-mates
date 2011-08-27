@@ -63,6 +63,7 @@ app.post('/', function (req, res, next) {
 				   var jsonCounter = JSON.parse(fileContents);
 				   var counter = jsonCounter.counter;
 				   counter++;
+logger.debug("counter:" + counter)
 				   logger.debug(counter);
 				   fs.writeFileSync(fileCounter, '{ "counter": ' + counter + ' }');
 
@@ -70,6 +71,8 @@ app.post('/', function (req, res, next) {
 				   var audioFileName = counter + '.' + ext;
 				   var audioFilePath = audioDir + audioFileName;
 				   var cmd = "mv " + files.audio.path + " " + audioFilePath;
+logger.debug("cmd:" + cmd)
+
 				   var child = exec(cmd, function(err, stdout, stderr) {
 						      if (err) {
 							sys.puts(JSON.stringify(err));
@@ -80,7 +83,7 @@ app.post('/', function (req, res, next) {
 										   } else {
 										     sys.puts(text);
 										     res.render('index', { result: text });
-										     fs.unlinkSync(__dirname + '/' + path.basename(audioFileName, '.mp3') + '.flac');
+										     fs.unlinkSync(__dirname + '/audio/' + path.basename(audioFileName, '.mp3') + '.flac');
 										   }
 										 });
 						      }
