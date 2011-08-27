@@ -36,7 +36,7 @@ app.configure('production', function(){
 
 // Routes
 var audioDir = __dirname + '/audio/';
-var fileCounter = 'counter.json';
+var fileCounter = __dirname + '/counter.json';
 
 app.get('/', function(req, res){
 	  res.render('index', {result: ""});
