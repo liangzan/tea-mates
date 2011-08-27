@@ -16,6 +16,7 @@ tmtags
 ## PROJECT::GENERAL
 node_modules
 tmp
+audio
 
 ## PROJECT::SPECIFIC
 mp3splt.log
@@ -23,4 +24,4 @@ mp3splt.log
 ## ECLIPSE
 .project
 .settings/*
-
+counter.json
