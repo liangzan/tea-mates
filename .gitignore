@@ -15,5 +15,6 @@ tmtags
 
 ## PROJECT::GENERAL
 node_modules
+tmp
 
 ## PROJECT::SPECIFIC
