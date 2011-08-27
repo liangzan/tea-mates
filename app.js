@@ -3,9 +3,15 @@
  * Module dependencies.
  */
 
-var express = require('express');
+var logger = require('nlogger').logger(module);
+var fs = require('fs');
+var express = require('express')
+	, form = require('connect-form');
 
-var app = module.exports = express.createServer();
+
+var app = module.exports = express.createServer(
+	form({ keepExtensions: true })
+);
 
 // Configuration
 
@@ -28,10 +34,61 @@ app.configure('production', function(){
 
 // Routes
 
+var tempDir = '/tmp/'; //this is where the connect middleware is storing uploaded files
+var audioDir = '/home/teamates/audio/'; // this is where we will permanently store uploaded files
+var fileCounter = 'counter.json';
+
 app.get('/', function(req, res){
-  res.render('index', {
-    title: 'Express'
-  });
+//  res.render('index', {
+//    title: 'Express'
+//  });
+	res.send('<form method="post" enctype="multipart/form-data" '
+			 + '<p>Audio file: <input type="file" name="audio" /></p>'
+			 + '<p><input type="submit" value="Upload" /></p>'
+			 + '</form>');
+});
+
+app.post('/', function (req, res, next) {
+	req.form.complete(function(err, fields, files) {
+		if (err) {
+			next(err);
+		} else {
+			logger.debug('\nuploaded %s to %s'
+	    	        	, files.audio.filename
+	    	        	, files.audio.path);
+			
+			// should prob use async fs functions below with a callback
+			
+			// get the file extension
+			var split = files.audio.filename.split('.');
+			var ext = split[split.length - 1];
+			
+			if (ext == 'mp3') {
+				// get the file counter and increment it
+				var fileContents = fs.readFileSync(fileCounter,'utf8'); 
+				var jsonCounter = JSON.parse(fileContents);
+				var counter = jsonCounter.counter;
+				counter++;
+				logger.debug(counter);
+				fs.writeFileSync(fileCounter, '{ "counter": ' + counter + ' }');
+				
+				// move the file from the temp to permanent dir
+				fs.rename(files.audio.path
+						  , audioDir + counter + '.' + ext);
+		    	res.redirect('back');
+			}
+			else {
+				res.send(415);
+			}
+			
+
+		}
+	});
+	
+	req.form.on('progress', function(bytesReceived, bytesExpected){
+		var percent = (bytesReceived / bytesExpected * 100) | 0;
+		process.stdout.write('Uploading: %' + percent + '\r');
+	});
 });
 
 app.listen(3000);

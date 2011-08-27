@@ -19,3 +19,8 @@ tmp
 
 ## PROJECT::SPECIFIC
 mp3splt.log
+
+## ECLIPSE
+.project
+.settings/*
+
