@@ -17,3 +17,7 @@ tmtags
 node_modules
 
 ## PROJECT::SPECIFIC
+
+## ECLIPSE
+.project
+.settings/*
