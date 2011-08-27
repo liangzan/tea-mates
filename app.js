@@ -4,7 +4,7 @@
  */
 
 var logger = require('nlogger').logger(module);
-
+var fs = require('fs');
 var express = require('express')
 	, form = require('connect-form');
 
@@ -36,6 +36,7 @@ app.configure('production', function(){
 
 var tempDir = '/tmp/'; //this is where the connect middleware is storing uploaded files
 var audioDir = '/home/teamates/audio/'; // this is where we will permanently store uploaded files
+var fileCounter = 'counter.json';
 
 app.get('/', function(req, res){
 //  res.render('index', {
@@ -52,14 +53,35 @@ app.post('/', function (req, res, next) {
 		if (err) {
 			next(err);
 		} else {
-//			logger.debug(fields);
-			// if there was a image uploaded, move it from tmp to our image folder
 			logger.debug('\nuploaded %s to %s'
 	    	        	, files.audio.filename
 	    	        	, files.audio.path);
-			fs.rename(files.audio.path
-					  , audioDir + files.audio.filename);
-	    	res.redirect('back');
+			
+			// should prob use async fs functions below with a callback
+			
+			// get the file extension
+			var split = files.audio.filename.split('.');
+			var ext = split[split.length - 1];
+			
+			if (ext == 'mp3') {
+				// get the file counter and increment it
+				var fileContents = fs.readFileSync(fileCounter,'utf8'); 
+				var jsonCounter = JSON.parse(fileContents);
+				var counter = jsonCounter.counter;
+				counter++;
+				logger.debug(counter);
+				fs.writeFileSync(fileCounter, '{ "counter": ' + counter + ' }');
+				
+				// move the file from the temp to permanent dir
+				fs.rename(files.audio.path
+						  , audioDir + counter + '.' + ext);
+		    	res.redirect('back');
+			}
+			else {
+				res.send(415);
+			}
+			
+
 		}
 	});
 	
