@@ -19,6 +19,7 @@ var app = module.exports = express.createServer(
 // Configuration
 app.configure(function(){
 		app.set('views', __dirname + '/views');
+//		app.set('views', __dirname + '/public');
 		app.set('view engine', 'jade');
 		app.use(express.bodyParser());
 		app.use(express.methodOverride());
@@ -63,6 +64,7 @@ app.post('/', function (req, res, next) {
 				   var jsonCounter = JSON.parse(fileContents);
 				   var counter = jsonCounter.counter;
 				   counter++;
+logger.debug("counter:" + counter)
 				   logger.debug(counter);
 				   fs.writeFileSync(fileCounter, '{ "counter": ' + counter + ' }');
 
@@ -70,6 +72,8 @@ app.post('/', function (req, res, next) {
 				   var audioFileName = counter + '.' + ext;
 				   var audioFilePath = audioDir + audioFileName;
 				   var cmd = "mv " + files.audio.path + " " + audioFilePath;
+logger.debug("cmd:" + cmd)
+
 				   var child = exec(cmd, function(err, stdout, stderr) {
 						      if (err) {
 							sys.puts(JSON.stringify(err));
@@ -80,7 +84,7 @@ app.post('/', function (req, res, next) {
 										   } else {
 										     sys.puts(text);
 										     res.render('index', { result: text });
-										     fs.unlinkSync(__dirname + '/' + path.basename(audioFileName, '.mp3') + '.flac');
+										     fs.unlinkSync(__dirname + '/audio/' + path.basename(audioFileName, '.mp3') + '.flac');
 										   }
 										 });
 						      }
@@ -100,5 +104,13 @@ app.post('/', function (req, res, next) {
 		       });
 	 });
 
-app.listen(3000);
+app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
+
+  // if run as root, downgrade to the owner of this file
+//  if (process.getuid() === 0)
+//   require('fs').stat(__filename, function(err, stats) {
+//      if (err) return console.log(err)
+//      process.setuid(stats.uid);
+//    });
+});
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

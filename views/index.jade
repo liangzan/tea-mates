@@ -1,12 +1,15 @@
-h1 Welcome to tea mates
+#logo
+#center
+  #inputArea
+    #welcomeText
+      h2.textCenter Welcome to Tea-Mates!
+      h2.textCenter What did you say?
+    #uploadArea
+      form(method="post", enctype="multipart/form-data", action="/")
+        h1 Audio file: 
+          input(type="file", name="audio" ).uploadStyle
+          input(type="submit", value="Upload" ).searchBtn
 
-form(method="post", enctype="multipart/form-data", action="/")
-  h2 What did you say?
-  p
-    input(type="file", name="audio")
-  p
-    input(type="submit", value="Upload")
-
-- if (result !== "")
-  h2 I guess it is...
-  p= result
+        - if (result !== "")
+          h3 I guess it is...
+          p= result
