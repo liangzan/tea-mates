@@ -19,7 +19,7 @@ var app = module.exports = express.createServer(
 // Configuration
 app.configure(function(){
 		app.set('views', __dirname + '/views');
-//		app.set('views', __dirname + '/public');
+		//		app.set('views', __dirname + '/public');
 		app.set('view engine', 'jade');
 		app.use(express.bodyParser());
 		app.use(express.methodOverride());
@@ -64,7 +64,7 @@ app.post('/', function (req, res, next) {
 				   var jsonCounter = JSON.parse(fileContents);
 				   var counter = jsonCounter.counter;
 				   counter++;
-logger.debug("counter:" + counter)
+				   logger.debug("counter:" + counter);
 				   logger.debug(counter);
 				   fs.writeFileSync(fileCounter, '{ "counter": ' + counter + ' }');
 
@@ -72,7 +72,7 @@ logger.debug("counter:" + counter)
 				   var audioFileName = counter + '.' + ext;
 				   var audioFilePath = audioDir + audioFileName;
 				   var cmd = "mv " + files.audio.path + " " + audioFilePath;
-logger.debug("cmd:" + cmd)
+				   logger.debug("cmd:" + cmd);
 
 				   var child = exec(cmd, function(err, stdout, stderr) {
 						      if (err) {
@@ -107,11 +107,11 @@ logger.debug("cmd:" + cmd)
 
 app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
 
-  // if run as root, downgrade to the owner of this file
-//  if (process.getuid() === 0)
-//   require('fs').stat(__filename, function(err, stats) {
-//      if (err) return console.log(err)
-//      process.setuid(stats.uid);
-//    });
-});
+	     // if run as root, downgrade to the owner of this file
+	     //  if (process.getuid() === 0)
+	     //   require('fs').stat(__filename, function(err, stats) {
+	     //      if (err) return console.log(err)
+	     //      process.setuid(stats.uid);
+	     //    });
+	   });
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
