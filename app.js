@@ -14,7 +14,7 @@ normalizer = require('./lib/normalize').Normalizer;
 
 var app = module.exports = express.createServer(
   form({ keepExtensions: true })
-);
+), io = require('socket.io').listen(app);
 
 // Configuration
 app.configure(function(){
@@ -98,6 +98,7 @@ logger.debug("cmd:" + cmd)
 			     });
 
 	   req.form.on('progress', function(bytesReceived, bytesExpected){
+
 			 var percent = (bytesReceived / bytesExpected * 100) | 0;
 			 process.stdout.write('Uploading: %' + percent + '\r');
 		       });
