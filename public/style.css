@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6,  blockquote, pre, a, abbr, acronym, address, cite, code,
 	vertical-align:middle;
 }
 
-input {  
+input {
     /**border-color: aliceBlue;
     border-style: solid;
     border-width: 3px; **/
@@ -38,7 +38,7 @@ input {
     width: 350px;
     padding-bottom:3px;
 	border:1px;
-}  
+}
 #logo{
 	background:url(images/logo.png) no-repeat;
 	height:90px;
@@ -50,7 +50,7 @@ input {
 }
 
 #center{
-	height:400px;
+	height:600px;
 	width:600px;
 	margin-right: auto;
 	margin-left: auto;
@@ -65,6 +65,7 @@ input {
     margin-top: 25px;
     width: 600px;
 }
+
 
 #uploadArea{
 	height:200px;
@@ -87,8 +88,6 @@ h1{
 }
 
 #welcomeText{
-	height:153px;
-	width:590px;
 }
 
 /** Buttons **/
@@ -133,7 +132,7 @@ h1{
     width: 140px;
 	font-size:24px;
 }
-	
+
 /** Search Box **/
 #inputArea .searchBox{
 	background: none repeat scroll 0 0 transparent;
@@ -153,4 +152,12 @@ h1{
 
 #inputArea .uploadStyle{
 	font-size:16px;
+}
+
+#sample {
+    padding: 0 30px;
+}
+
+#sample li {
+    font-size:16px;
 }
